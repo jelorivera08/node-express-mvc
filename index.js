@@ -3,8 +3,10 @@ const app = express();
 const mongoRepository = require('./mongoRepo');
 const db = require('./mongodb');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 app.use(bodyParser.json());
+app.use(cors());
 
 db.once('open', () => {
   console.log('db is accessed');
@@ -18,7 +20,7 @@ app.get('/api/v1/counters', async (req, res) => {
   });
 });
 
-app.get('/api/v1/counter', async (req, res) => {
+app.post('/api/v1/counter', async (req, res) => {
   await mongoRepository.create(
     { title: req.body.title, count: 0 },
     async (err) => {
